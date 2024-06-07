@@ -20,13 +20,13 @@ const createItem = async (req, res) => {
   }
 };
 
-const fetchAllItems = async  (req, res)=> {
+const fetchAllItems = async (req, res) => {
   try {
-      const item = await Items.find();
-      return res.json({ success: true, data: item });
+    const item = await Items.find();
+    return res.json({ success: true, data: item });
   }
   catch (ex) {
-      return res.json({ success: false, message: ex });
+    return res.json({ success: false, message: ex });
 
   }
 };
@@ -34,7 +34,7 @@ const fetchAllItems = async  (req, res)=> {
 const getItems = async (req, res) => {
   try {
     let page = parseInt(req.query.page) || 1;
-    let limit = parseInt(req.query.limit) || 50;
+    let limit = parseInt(req.query.limit) || 150;
 
     // Get companyCode from params
     const { companyCode } = req.params;

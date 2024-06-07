@@ -72,6 +72,10 @@ const SalesEntrySchema = new mongoose.Schema({
         type: String,
         required: [true, "Please provide a tax for this sales entry."],
       },
+      discount: {
+        type: Number,
+        required: [true, "Please provide a discount for this sales entry."],
+      },
       sgst: {
         type: Number,
         required: [true, "Please provide a sgst for this sales entry."],
