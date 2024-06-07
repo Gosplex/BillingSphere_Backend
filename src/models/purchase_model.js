@@ -55,6 +55,10 @@ const purchaseSchema = new mongoose.Schema({
                 type: Number,
                 required: [true, "Please provide a cgst for this sales entry."],
             },
+            discount: {
+                type: Number,
+                required: [true, "Please provide a cgst for this sales entry."],
+            },
             igst: {
                 type: Number,
                 required: [true, "Please provide a igst for this sales entry."],
