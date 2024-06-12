@@ -95,6 +95,16 @@ const PurchaseController = {
     }
   },
 
+  //  Get all purchase
+  getAllpurchase: async function (req, res) {
+    try {
+      const purchase = await PurchaseModel.find({});
+      return res.json({ success: true, data: purchase });
+    } catch (ex) {
+      return res.json({ success: false, message: ex });
+    }
+  },
+
   //For Fetching all Purchase
 
   fetchAllPurchase: async function (req, res) {
@@ -142,9 +152,20 @@ const PurchaseController = {
         const productId = entry.itemName;
         const quantity = entry.qty;
         const product = await Items.findById(productId);
-        // Update maximum stock
-        product.maximumStock -= quantity;
-        await product.save();
+        // product.maximumStock -= quantity;
+        // await product.save();
+
+        if (!product) {
+          return res.json({
+            success: false,
+            message: "product not found.",
+          });
+        }
+        await Items.updateOne(
+          { _id: productId },
+          { $inc: { maximumStock: -quantity } }
+        );
+
       }
 
       if (purchaseType === "Debit") {

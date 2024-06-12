@@ -109,6 +109,12 @@ const createSales = async (req, res) => {
 //For updating Sales
 const updateSales = async (req, res) => {
   try {
+
+
+
+
+
+
     const sales = await SalesEntry.updateOne({ _id: req.params.id }, req.body, {
       new: true,
       runValidators: true,
@@ -136,9 +142,20 @@ const deleteSales = async (req, res) => {
       const salesId = entry.itemName;
       const quantity = entry.qty;
       const sales = await Items.findById(salesId);
-      // Update maximum stock
-      sales.maximumStock += quantity;
-      await sales.save();
+      // sales.maximumStock += quantity;
+      // await sales.save();
+
+      if (!sales) {
+        return res.json({
+          success: false,
+          message: "sales not found.",
+        });
+      }
+      await Items.updateOne(
+        { _id: salesId },
+        { $inc: { maximumStock: quantity } }
+      );
+
     }
 
     if (salesType === "Debit") {

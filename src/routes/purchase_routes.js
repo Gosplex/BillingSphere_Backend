@@ -8,6 +8,10 @@ PurchaseRoutes.get(
   verifyToken,
   PurchaseController.fetchAllPurchase
 );
+
+PurchaseRoutes.get("/get-all", verifyToken, PurchaseController.getAllpurchase);
+
+
 PurchaseRoutes.post("/create", verifyToken, PurchaseController.createPurchase);
 PurchaseRoutes.get("/get/:id", verifyToken, PurchaseController.fetchPurchseById);
 PurchaseRoutes.delete(

@@ -126,6 +126,38 @@ const ItemsSchema = new mongoose.Schema({
       },
     },
   ],
+  openingBalance: [
+    {
+      qty: {
+        type: Number,
+        required: [true, "Please provide a quantity for this qty."],
+      },
+      unit: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "MeasurementUnit",
+        required: true,
+      },
+      rate: {
+        type: Number,
+        required: [true, "Please provide a quantity for this rate."],
+      },
+      total: {
+        type: Number,
+        required: [true, "Please provide a quantity for this total."],
+      },
+    },
+  ],
+  openingBalanceQty: {
+    type: Number,
+    required: false,
+    default: 0.0,
+  },
+  openingBalanceAmt: {
+    type: Number,
+    required: false,
+    default: 0.0,
+  },
+
   createdAt: {
     type: Date,
     required: false,
