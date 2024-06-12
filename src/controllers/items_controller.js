@@ -26,10 +26,8 @@ const fetchAllItems = async (req, res) => {
   try {
     const item = await Items.find();
     return res.json({ success: true, data: item });
-  }
-  catch (ex) {
+  } catch (ex) {
     return res.json({ success: false, message: ex });
-
   }
 };
 
@@ -128,6 +126,46 @@ const updateItem = async (req, res) => {
     }
   } catch (ex) {
     res.json({ success: false, message: ex });
+  }
+};
+
+// Update item price
+const updateItemStock = async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const { maximumStock } = req.params;
+
+    // Find the item by its ID to get the current maximum stock
+    const currentItem = await Items.findById(itemId);
+
+    if (!currentItem) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Item not found" });
+    }
+
+    // Subtract the value from the params from the current maximum stock
+    const updatedMaximumStock =
+      currentItem.maximumStock - parseInt(maximumStock);
+
+    // Update the item with the new maximum stock
+    const updatedItem = await Items.findByIdAndUpdate(
+      itemId,
+      { maximumStock: updatedMaximumStock },
+      { new: true }
+    );
+
+    // Check if the item was updated
+    if (updatedItem) {
+      res.json({ success: true, data: updatedItem });
+    } else {
+      res
+        .status(500)
+        .json({ success: false, message: "Failed to update item" });
+    }
+  } catch (ex) {
+    // Handle any errors
+    res.status(500).json({ success: false, message: ex.message });
   }
 };
 
@@ -417,4 +455,5 @@ module.exports = {
   updateAllItems,
   getBrandsByGroup,
   fetchAllItems,
+  updateItemStock,
 };

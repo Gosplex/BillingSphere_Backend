@@ -37,6 +37,12 @@ router.put(
   ItemsController.updateItem
 );
 
+// Update a specific item price by ID
+router.put(
+  "/update-item-stock/:itemId/:maximumStock",
+  ItemsController.updateItemStock
+);
+
 // Delete a specific item by ID
 router.delete("/delete-item/:itemId", verifyToken, ItemsController.deleteItem);
 
