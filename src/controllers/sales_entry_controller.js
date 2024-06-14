@@ -59,16 +59,16 @@ const createSales = async (req, res) => {
     // }
 
 
-    const existingSales = await SalesEntry.findOne({
-      $or: [{ dcNo: req.body.dcNo }],
-    });
+    // const existingSales = await SalesEntry.findOne({
+    //   $or: [{ dcNo: req.body.dcNo }],
+    // });
 
-    if (existingSales) {
-      return res.json({
-        success: false,
-        message: "Bill No already exists.",
-      });
-    }
+    // if (existingSales) {
+    //   return res.json({
+    //     success: false,
+    //     message: "Bill No already exists.",
+    //   });
+    // }
 
     await newsalesData.save();
 
