@@ -1,4 +1,4 @@
-# Chnages and Folders (28/03/2024)
+# Changes and Folders (28/03/2024)
 
 ## Controllers
  - item_group_controller.js
