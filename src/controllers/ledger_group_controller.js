@@ -40,6 +40,20 @@ const getAllLedgerGroup = async (req, res) => {
   }
 };
 
-module.exports = { createLedgerGroup, deleteLedgerGroup, getAllLedgerGroup };
+
+const getSingleLedgerGroup = async (req, res) => {
+  try {
+    const ledgerGroups = await LedgerGroup.findOne({ _id: req.params.id });
+    if (!ledgerGroups) {
+      return res.json({ success: false, message: "Ledger Group not found" });
+    }
+    return res.json({ success: true, data: ledgerGroups });
+  } catch (ex) {
+    return res.json({ success: false, message: ex });
+  }
+};
+
+
+module.exports = { createLedgerGroup, deleteLedgerGroup, getAllLedgerGroup, getSingleLedgerGroup };
 
 

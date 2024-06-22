@@ -60,8 +60,6 @@ const ReceiptVoucherSchema = new mongoose.Schema({
         required: false,
     },
 
-
-
     // entries: [
     //     {
     //         account: {

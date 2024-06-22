@@ -19,4 +19,11 @@ LedgerGroupRoutes.get(
   verifyToken,
   LedgerGroupController.getAllLedgerGroup
 );
+
+LedgerGroupRoutes.get(
+  "/get-single-ledger/:id",
+  verifyToken,
+  LedgerGroupController.getSingleLedgerGroup
+);
+
 module.exports = LedgerGroupRoutes;

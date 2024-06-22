@@ -46,7 +46,7 @@ const PaymentSchema = new mongoose.Schema({
     type: String,
     ref: "NewCompany",
     required: true,
-},
+  },
 });
 
 module.exports = mongoose.model("Payment", PaymentSchema);
