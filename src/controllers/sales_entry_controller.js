@@ -109,12 +109,6 @@ const createSales = async (req, res) => {
 //For updating Sales
 const updateSales = async (req, res) => {
   try {
-
-
-
-
-
-
     const sales = await SalesEntry.updateOne({ _id: req.params.id }, req.body, {
       new: true,
       runValidators: true,

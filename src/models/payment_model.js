@@ -6,7 +6,7 @@ const PaymentSchema = new mongoose.Schema({
     required: true,
   },
   totalamount: {
-    type: String,
+    type: Number,
     required: true,
   },
   date: {
@@ -30,15 +30,36 @@ const PaymentSchema = new mongoose.Schema({
       },
       debit: {
         type: Number,
-        required: true,
+        required: false,
       },
       credit: {
         type: Number,
-        required: true,
+        required: false,
       },
     },
   ],
-  naration: {
+  billwise: [
+    {
+      date: {
+        type: String,
+        required: true,
+      },
+      purchase: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Purchase",
+        required: true,
+      },
+      billNo: {
+        type: String,
+        required: false,
+      },
+      amount: {
+        type: Number,
+        required: false,
+      },
+    },
+  ],
+  narration: {
     type: String,
     required: false,
   },
