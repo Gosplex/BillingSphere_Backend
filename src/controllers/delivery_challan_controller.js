@@ -2,19 +2,106 @@ const DeliveryChallanModel = require("../models/delivery_challan_model");
 const ProductStockModel = require("../models/product_stock_model");
 const ItemModel = require("../models/items_model");
 
-// For creating a new inward challan
+// // For creating a new inward challan
+// const createDeliveryChallan = async (req, res) => {
+//   try {
+//     const deliveryChallan = new DeliveryChallanModel(req.body);
+
+//     for (let entry of req.body.entries) {
+//       const item = await ItemModel.findById(entry.itemName);
+
+//       console.log('REQ BODY:', req.body.entries);
+
+//       console.log(req.body.companyCode);
+
+
+//       await item.updateOne(
+//         { _id: item._id },
+//         { $inc: { maximumStock: -entry.qty } }
+//       );
+
+//       console.log(`Decremented maximumStock by ${entry.qty} for item ${item._id}`);
+
+
+
+//       const existingItem = await ItemModel.findOne({
+//         codeNo: item.codeNo,
+//         companyCode: req.body.companyCode,
+//       });
+
+//       console.log('Found E item id:', existingItem._id);
+
+
+//       if (existingItem) {
+//         await existingItem.updateOne(
+//           { _id: existingItem._id },
+//           { $inc: { maximumStock: 200 } }
+//         );
+
+//         console.log(`Incremented maximumStock by ${entry.qty} for item ${existingItem._id}`);
+//       } else {
+//         const newItem = new ItemModel({
+//           itemGroup: item.itemGroup,
+//           itemBrand: item.itemBrand,
+//           itemName: item.itemName,
+//           printName: item.printName,
+//           codeNo: item.codeNo,
+//           taxCategory: item.taxCategory,
+//           hsnCode: item.hsnCode,
+//           barcode: item.barcode,
+//           storeLocation: item.storeLocation,
+//           measurementUnit: item.measurementUnit,
+//           secondaryUnit: item.secondaryUnit,
+//           minimumStock: item.minimumStock,
+//           maximumStock: entry.qty,
+//           monthlySalesQty: item.monthlySalesQty,
+//           date: item.date,
+//           dealer: item.dealer,
+//           subDealer: item.subDealer,
+//           retail: item.retail,
+//           mrp: item.mrp,
+//           price: item.price,
+//           openingStock: item.openingStock,
+//           status: item.status,
+//           images: item.images,
+//           createdAt: Date.now(),
+//           updatedAt: Date.now(),
+//           companyCode: req.body.companyCode,
+//         });
+
+//         console.log("New Item");
+//         console.log(newItem);
+
+//         // Save the new item
+//         await newItem.save();
+//       }
+//     }
+//     // Save the delivery challan
+//     await deliveryChallan.save();
+//     res.status(201).send(deliveryChallan);
+//   } catch (error) {
+//     res.status(400).send(error);
+//   }
+// };
+
 const createDeliveryChallan = async (req, res) => {
   try {
     const deliveryChallan = new DeliveryChallanModel(req.body);
 
-    for (let entry of req.body.entries) {
+    const updatePromises = req.body.entries.map(async (entry) => {
       const item = await ItemModel.findById(entry.itemName);
 
 
-      await item.updateOne(
-        { _id: item._id },
-        { $inc: { maximumStock: -entry.qty } }
-      );
+
+      item.maximumStock -= entry.qty;
+      item.save();
+
+
+      // const decrementStockPromise = item.updateOne(
+      //   { _id: item._id },
+      //   { $inc: { maximumStock: -entry.qty } }
+      // );
+      console.log(`Decremented maximumStock by ${entry.qty} for item ${item._id}`);
 
       const existingItem = await ItemModel.findOne({
         codeNo: item.codeNo,
@@ -22,10 +109,15 @@ const createDeliveryChallan = async (req, res) => {
       });
 
       if (existingItem) {
-        await existingItem.updateOne(
-          { _id: existingItem._id },
-          { $inc: { maximumStock: entry.qty } }
-        );
+        // const incrementStockPromise = existingItem.updateOne(
+        //   { _id: existingItem._id },
+        //   { $inc: { maximumStock: 200 } }
+        // );
+
+        existingItem.maximumStock += entry.qty;
+        await existingItem.save();
+        // console.log(`Incremented maximumStock by ${entry.qty} for item ${existingItem._id}`);
+        // await incrementStockPromise;
       } else {
         const newItem = new ItemModel({
           itemGroup: item.itemGroup,
@@ -56,17 +148,24 @@ const createDeliveryChallan = async (req, res) => {
           companyCode: req.body.companyCode,
         });
 
-        // Save the new item
+        console.log("New Item");
+        console.log(newItem);
+
         await newItem.save();
       }
-    }
-    // Save the delivery challan
+
+
+    });
+
+    await Promise.all(updatePromises);
+
     await deliveryChallan.save();
     res.status(201).send(deliveryChallan);
   } catch (error) {
     res.status(400).send(error);
   }
 };
+
 
 // For getting all inward challans
 const getAllDeliveryChallans = async (req, res) => {
