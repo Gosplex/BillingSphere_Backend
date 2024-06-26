@@ -12,9 +12,6 @@ const PaymentController = {
     }
   },
 
-
-
-
   getPayments: async (req, res) => {
     try {
       const payments = await Payment.find();

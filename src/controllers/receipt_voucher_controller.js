@@ -4,30 +4,12 @@ const Ledger = require("../models/ledger_model");
 const ReceiptVoucherController = {
     createReceiptVoucher: async (req, res) => {
         try {
-
             const receiptData = req.body;
-            const debit = receiptData.debit;
-            const credit = receiptData.credit;
-            const ledgerID = receiptData.ledger;
-            const receiptType = receiptData.account;
-
-            if (receiptType == "Dr") {
-                const ledgerfetch = await Ledger.findById(ledgerID);
-                ledgerfetch.debitBalance += parseFloat(debit); // Parse debit as float
-                await ledgerfetch.save(); // Save the ledger
-            } else if (receiptType == "Cr") {
-                const ledgerfetch = await Ledger.findById(ledgerID);
-                ledgerfetch.debitBalance -= parseFloat(credit); // Parse credit as float
-                await ledgerfetch.save(); // Save the ledger
-            }
-
-
-
-            const receiptvoucher = new ReceiptVoucher(req.body);
-            const savedReceiptVoucher = await receiptvoucher.save();
-            res.status(201).json(savedReceiptVoucher);
+            const receiptVch = new ReceiptVoucher(receiptData); // Create a new instance of Payment
+            await receiptVch.save();
+            return res.status(201).json({ success: true, message: 'Payment saved successfully' });
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            return res.status(500).json({ success: false, message: ex.message });
         }
     },
 
@@ -39,9 +21,6 @@ const ReceiptVoucherController = {
             res.status(400).json({ error: error.message });
         }
     },
-
-
-
 
     getReceiptVoucherById: async (req, res) => {
         try {
@@ -58,11 +37,9 @@ const ReceiptVoucherController = {
         }
     },
 
-
-
     updateReceiptVoucher: async (req, res) => {
         try {
-            const updatedreceiptvoucher = await receiptvoucher.findByIdAndUpdate(
+            const updatedreceiptvoucher = await ReceiptVoucher.findByIdAndUpdate(
                 req.params.id,
                 req.body,
                 { new: true }
@@ -78,7 +55,7 @@ const ReceiptVoucherController = {
 
     deleteReceiptVoucher: async (req, res) => {
         try {
-            const deletedreceiptvoucher = await receiptvoucher.findByIdAndDelete(req.params.id);
+            const deletedreceiptvoucher = await ReceiptVoucher.findByIdAndDelete(req.params.id);
             if (!deletedreceiptvoucher) {
                 return res.status(404).json({ error: "ReceiptVoucher not found" });
             }
