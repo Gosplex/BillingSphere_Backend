@@ -129,6 +129,7 @@ const deleteSales = async (req, res) => {
     const getSales = await SalesEntry.findOne({ _id: id });
     const ledgerID = getSales.party;
     const salesType = getSales.type;
+
     const salesTotalAmount = parseFloat(getSales.totalamount);
     const salesDueAmount = parseFloat(getSales.dueAmount);
 
@@ -152,15 +153,13 @@ const deleteSales = async (req, res) => {
 
     }
 
-    if (salesType === "Debit") {
+    if (salesType === "DEBIT") {
       const ledger = await Ledger.findById(ledgerID);
-      if (salesDueAmount == 0) {
-        const op = ledger.openingBalance + salesTotalAmount;
-        ledger.openingBalance = op;
-      } else if (getSales.dueAmount > 0) {
-        const op = salesTotalAmount - salesDueAmount;
-        ledger.openingBalance = op;
+      if (salesTotalAmount > 0) {
+        const op = ledger.debitBalance - salesTotalAmount;
+        ledger.debitBalance = op;
       }
+
       await ledger.save();
     }
     const getSalesAndDelete = await SalesEntry.findByIdAndDelete(id);

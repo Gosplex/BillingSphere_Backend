@@ -91,33 +91,18 @@ const createDeliveryChallan = async (req, res) => {
     const updatePromises = req.body.entries.map(async (entry) => {
       const item = await ItemModel.findById(entry.itemName);
 
-
-
       item.maximumStock -= entry.qty;
       item.save();
-
-
-      // const decrementStockPromise = item.updateOne(
-      //   { _id: item._id },
-      //   { $inc: { maximumStock: -entry.qty } }
-      // );
       console.log(`Decremented maximumStock by ${entry.qty} for item ${item._id}`);
-
       const existingItem = await ItemModel.findOne({
         codeNo: item.codeNo,
         companyCode: req.body.companyCode,
       });
 
       if (existingItem) {
-        // const incrementStockPromise = existingItem.updateOne(
-        //   { _id: existingItem._id },
-        //   { $inc: { maximumStock: 200 } }
-        // );
 
         existingItem.maximumStock += entry.qty;
         await existingItem.save();
-        // console.log(`Incremented maximumStock by ${entry.qty} for item ${existingItem._id}`);
-        // await incrementStockPromise;
       } else {
         const newItem = new ItemModel({
           itemGroup: item.itemGroup,
@@ -153,8 +138,6 @@ const createDeliveryChallan = async (req, res) => {
 
         await newItem.save();
       }
-
-
     });
 
     await Promise.all(updatePromises);
