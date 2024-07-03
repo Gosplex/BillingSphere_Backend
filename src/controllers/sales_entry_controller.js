@@ -208,6 +208,34 @@ const fetchAllSales = async (req, res) => {
     return res.json({ success: false, message: ex });
   }
 };
+//pagination
+const getSales = async (req, res) => {
+  try {
+    let page = parseInt(req.query.page) || 1;
+    let limit = parseInt(req.query.limit) || 12;
+
+    // Get companyCode from params
+    const { companyCode } = req.params;
+
+    const skip = (page - 1) * limit;
+
+    // Fetch total count of items
+    const totalCount = await SalesEntry.countDocuments({});
+
+    // Calculate total number of pages
+    const totalPages = Math.ceil(totalCount / limit);
+
+    // Fetch items with pagination
+    const allSales = await SalesEntry.find({ companyCode: companyCode })
+      .skip(skip)
+      .limit(limit);
+    res.json({ success: true, data: allSales, totalPages });
+  } catch (ex) {
+    res.json({ success: false, message: ex });
+  }
+};
+
+
 // Download Receipt
 const downloadReceipt = async (req, res) => {
   try {
@@ -326,4 +354,5 @@ module.exports = {
   getSingleSales,
   downloadReceipt,
   fetchAllSales,
+  getSales,
 };

@@ -2,6 +2,7 @@ const { Schema, model } = require("mongoose");
 
 const hsnCodeSchema = new Schema({
   hsn: { type: String, required: [true, "hsn is required"] },
+  description: { type: String, required: [false, "description"] },
   updatedOn: { type: Date },
   createdOn: { type: Date },
 });

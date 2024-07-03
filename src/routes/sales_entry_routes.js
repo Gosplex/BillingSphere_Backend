@@ -14,6 +14,8 @@ SalesEntryRoutes.get(
   SalesEntryController.fetchAllSales
 );
 
+SalesEntryRoutes.get("/get-sales/:companyCode", SalesEntryController.getSales);
+
 SalesEntryRoutes.delete(
   "/delete/:id",
   verifyToken,

@@ -44,6 +44,7 @@ const SalesEntrySchema = new mongoose.Schema({
   },
   dueAmount: { type: String, default: "0" },
   cashAmount: { type: String, default: "0" },
+  roundoffDiff: { type: Number, default: "0.00" },
 
   entries: [
     {
@@ -52,9 +53,17 @@ const SalesEntrySchema = new mongoose.Schema({
         ref: "Items",
         required: [true, "Please provide a item name for this sales entry."],
       },
+      additionalInfo: {
+        type: String,
+        required: [false, "Please provide a additionalInfo for this sales entry."],
+      },
       qty: {
         type: Number,
         required: [true, "Please provide a quantity for this sales entry."],
+      },
+      baseRate: {
+        type: Number,
+        required: [true, "Please provide a rate for this sales entry."],
       },
       rate: {
         type: Number,
