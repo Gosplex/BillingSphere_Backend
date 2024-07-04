@@ -63,7 +63,7 @@ const SalesEntrySchema = new mongoose.Schema({
       },
       baseRate: {
         type: Number,
-        required: [true, "Please provide a rate for this sales entry."],
+        required: [true, "Please provide a baseRate for this sales entry."],
       },
       rate: {
         type: Number,
@@ -84,6 +84,10 @@ const SalesEntrySchema = new mongoose.Schema({
       discount: {
         type: Number,
         required: [true, "Please provide a discount for this sales entry."],
+      },
+      originaldiscount: {
+        type: Number,
+        required: [true, "Please provide a originaldiscount for this sales entry."],
       },
       sgst: {
         type: Number,
