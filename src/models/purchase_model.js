@@ -20,6 +20,7 @@ const purchaseSchema = new mongoose.Schema({
     totalamount: { type: String },
     cashAmount: { type: String },
     dueAmount: { type: String },
+    roundoffDiff: { type: Number, default: "0.00" },
     entries: [
         {
             itemName: {
