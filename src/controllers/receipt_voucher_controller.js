@@ -7,7 +7,7 @@ const ReceiptVoucherController = {
             const receiptData = req.body;
             const receiptVch = new ReceiptVoucher(receiptData); // Create a new instance of Payment
             await receiptVch.save();
-            return res.status(201).json({ success: true, message: 'Payment saved successfully' });
+            return res.status(201).json({ success: true, message: 'Receipt saved successfully' });
         } catch (error) {
             return res.status(500).json({ success: false, message: ex.message });
         }

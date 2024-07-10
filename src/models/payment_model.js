@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const PaymentSchema = new mongoose.Schema({
   no: {
-    type: String,
+    type: Number,
     required: true,
   },
   totalamount: {
