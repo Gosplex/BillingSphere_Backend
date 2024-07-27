@@ -29,6 +29,11 @@ const DeliveryChallanSchema = new mongoose.Schema({
     trim: true,
     required: [true, "Please provide a place for this sales entry."],
   },
+  ledger: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Ledger",
+    required: true,
+  },
   dcNo: {
     type: String,
     trim: true,
