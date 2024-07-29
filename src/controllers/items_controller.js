@@ -34,7 +34,7 @@ const fetchAllItems = async (req, res) => {
 const getItems = async (req, res) => {
   try {
     let page = parseInt(req.query.page) || 1;
-    let limit = parseInt(req.query.limit) || 100;
+    let limit = parseInt(req.query.limit) || 2000;
 
     // Get companyCode from params
     const { companyCode } = req.params;
