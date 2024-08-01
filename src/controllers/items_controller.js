@@ -30,32 +30,36 @@ const fetchAllItems = async (req, res) => {
     return res.json({ success: false, message: ex });
   }
 };
-
 const getItems = async (req, res) => {
   try {
     let page = parseInt(req.query.page) || 1;
-    let limit = parseInt(req.query.limit) || 2000;
+    let limit = req.query.limit ? parseInt(req.query.limit) : null;
 
     // Get companyCode from params
     const { companyCode } = req.params;
 
-    const skip = (page - 1) * limit;
+    const skip = (page - 1) * (limit || 0); // If limit is null, skip will be 0
 
     // Fetch total count of items
-    const totalCount = await Items.countDocuments({});
+    const totalCount = await Items.countDocuments({ companyCode: companyCode });
 
     // Calculate total number of pages
-    const totalPages = Math.ceil(totalCount / limit);
+    const totalPages = limit ? Math.ceil(totalCount / limit) : 1;
 
-    // Fetch items with pagination
-    const allItems = await Items.find({ companyCode: companyCode })
-      .skip(skip)
-      .limit(limit);
+    // Fetch items with or without pagination
+    const query = Items.find({ companyCode: companyCode }).skip(skip).sort({ _id: -1 });
+    if (limit) {
+      query.limit(limit);
+    }
+
+    const allItems = await query;
+
     res.json({ success: true, data: allItems, totalPages });
   } catch (ex) {
     res.json({ success: false, message: ex });
   }
 };
+
 
 const getItemById = async (req, res) => {
   try {
