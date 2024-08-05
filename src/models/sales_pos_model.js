@@ -19,12 +19,6 @@ const SalesPosSchema = new mongoose.Schema({
     trim: true,
     required: true,
   },
-  type: {
-    type: String,
-    trim: true,
-    required: true,
-  },
-
   entries: [
     {
       itemName: {
@@ -44,13 +38,37 @@ const SalesPosSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
+      basic: {
+        type: Number,
+        required: true,
+      },
+      dis: {
+        type: Number,
+        required: true,
+      },
+      disc: {
+        type: Number,
+        required: true,
+      },
+      tax: {
+        type: Number,
+        required: true,
+      },
       netAmount: {
         type: Number,
         required: true,
       },
     },
   ],
-  accountNo: {
+  setDiscount: {
+    type: String,
+    required: true,
+  },
+  ac: {
+    type: String,
+    required: true,
+  },
+  noc: {
     type: String,
     required: true,
   },
@@ -64,6 +82,27 @@ const SalesPosSchema = new mongoose.Schema({
   },
   remarks: {
     type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    trim: true,
+    required: true,
+  },
+  advance: {
+    type: Number,
+    required: true,
+  },
+  addition: {
+    type: Number,
+    required: true,
+  },
+  less: {
+    type: Number,
+    required: true,
+  },
+  roundOff: {
+    type: Number,
     required: true,
   },
   totalAmount: {
