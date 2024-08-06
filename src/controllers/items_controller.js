@@ -1,5 +1,8 @@
 const Items = require("../models/items_model");
 const BarcodePrint = require("../models/barcode_print_model");
+const NodeCache = require("node-cache");
+const myCache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
+
 const createItem = async (req, res) => {
   try {
     const newItemData = req.body;
@@ -12,8 +15,6 @@ const createItem = async (req, res) => {
         filename: image.filename,
       }));
     }
-
-
 
     const newItem = await Items.create(newItemData);
     res.json({ success: true, data: newItem });
@@ -30,6 +31,7 @@ const fetchAllItems = async (req, res) => {
     return res.json({ success: false, message: ex });
   }
 };
+
 const getItems = async (req, res) => {
   try {
     let page = parseInt(req.query.page) || 1;
@@ -40,6 +42,19 @@ const getItems = async (req, res) => {
 
     const skip = (page - 1) * (limit || 0); // If limit is null, skip will be 0
 
+    // Cache Key
+    const cacheKey = `items_${companyCode}_page_${page}_limit_${limit}`;
+
+    // Check if the data is in the cache
+    const cachedData = myCache.get(cacheKey);
+
+
+
+    if (cachedData) {
+      console.log("Data fetched from cache");
+      return res.json({ success: true, data: cachedData });
+    }
+
     // Fetch total count of items
     const totalCount = await Items.countDocuments({ companyCode: companyCode });
 
@@ -47,7 +62,9 @@ const getItems = async (req, res) => {
     const totalPages = limit ? Math.ceil(totalCount / limit) : 1;
 
     // Fetch items with or without pagination
-    const query = Items.find({ companyCode: companyCode }).skip(skip).sort({ _id: -1 });
+    const query = Items.find({ companyCode: companyCode })
+      .skip(skip)
+      .sort({ _id: -1 });
     if (limit) {
       query.limit(limit);
     }
@@ -59,7 +76,6 @@ const getItems = async (req, res) => {
     res.json({ success: false, message: ex });
   }
 };
-
 
 const getItemById = async (req, res) => {
   try {
