@@ -164,6 +164,10 @@ app.use("/api/daily-cash", DailyCashRoutes);
 const ExcelRoutes = require("./routes/excel_routes");
 app.use("/api/excel", ExcelRoutes);
 
+// Routes for New Customer
+const NewCustomerRoutes = require("./routes/new_customer_routes");
+app.use("/api/new-customer", NewCustomerRoutes);
+
 const PORT = 4567;
 app.listen(PORT, () => console.log(`Server started at PORT: ${PORT}`));
 
