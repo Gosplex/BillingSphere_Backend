@@ -68,6 +68,33 @@ const ReceiptVoucherSchema = new mongoose.Schema({
         ref: "NewCompany",
         required: true,
     },
+    chequeDetails: {
+        chequeNo: {
+            type: String,
+            required: false,
+        },
+        chequeDate: {
+            type: String,
+            required: false,
+        },
+        depositDate: {
+            type: String,
+            required: false,
+        },
+        batchNo: {
+            type: String,
+            required: false,
+        },
+        bank: {
+            type: String,
+            required: false,
+        },
+        branch: {
+            type: String,
+            required: false,
+        },
+    },
+
 });
 
 module.exports = mongoose.model("ReceiptVoucher", ReceiptVoucherSchema);
