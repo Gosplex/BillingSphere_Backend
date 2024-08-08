@@ -168,6 +168,10 @@ app.use("/api/excel", ExcelRoutes);
 const NewCustomerRoutes = require("./routes/new_customer_routes");
 app.use("/api/new-customer", NewCustomerRoutes);
 
+// Routes for New SalesMan
+const NewSalesManRoutes = require("./routes/new_sales_man_routes");
+app.use("/api/new-salesman", NewSalesManRoutes);
+
 const PORT = 4567;
 app.listen(PORT, () => console.log(`Server started at PORT: ${PORT}`));
 
