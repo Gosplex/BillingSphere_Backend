@@ -50,6 +50,19 @@ const SalesPosSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
+      base: {
+        type: Number,
+        required: true,
+      },
+      mrp: {
+        type: Number,
+        required: true,
+      },
+      amount: {
+        type: Number,
+        required: true,
+      },
+
       tax: {
         type: Number,
         required: true,
