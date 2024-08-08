@@ -73,7 +73,8 @@ const SalesPosSchema = new mongoose.Schema({
     required: true,
   },
   customer: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "NewCustomer",
     required: true,
   },
   billedTo: {
@@ -108,6 +109,14 @@ const SalesPosSchema = new mongoose.Schema({
   totalAmount: {
     type: Number,
     required: true,
+  },
+  createdAt: {
+    type: String,
+    required: false,
+  },
+  updatedAt: {
+    type: String,
+    required: false,
   },
 });
 
